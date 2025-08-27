@@ -1,230 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberSpy - Educational Security Tool</title>
-    <link rel="stylesheet" href="cyber.css">
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
-</head>
-<body>
-    <canvas class="matrix-bg" id="matrixCanvas"></canvas>
-
-    <!-- User Guide Popup -->
-    <div class="guide-overlay" id="guideOverlay">
-        <div class="guide-container">
-            <div class="guide-header">
-                <div class="guide-title">🛡️ CYBERSPY U-GUIDE</div>
-                <div class="guide-subtitle">OPERATIONAL MANUAL v1.1.0</div>
-                <button class="guide-close" onclick="closeGuide()">[X]</button>
-            </div>
-            <div class="guide-content" id="guideContent">
-                <div class="guide-loading">
-                    <div class="loading-text">Initializing secure connection...</div>
-                    <div class="loading-bar">
-                        <div class="loading-progress" id="loadingProgress"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="container">
-        <div class="header">
-            <div class="title">🕵️ CYBERSPY</div>
-            <div class="subtitle">Educational Security Monitoring System</div><br>
-            <div class="status-bar">
-                <div class="status-item">
-                    <span>Status:</span>
-                    <span style="color: #00ff41;">ONLINE</span>
-                    <span class="blink">●</span>
-                </div>
-                <div class="status-item">
-                    <span>Mode:</span>
-                    <span style="color: #00ccff;">MESSAGING</span>
-                </div>
-                <div class="status-item">
-                    <span>Time:</span>
-                    <span id="currentTime"></span>
-                </div>
-            </div>
-        </div>
-
-        <div class="crypto-panel">
-            <div class="panel-header">
-                <div class="panel-icon">🔐</div>
-                <div class="panel-title">Advanced Cryptography Lab</div>
-            </div>
-            <div class="crypto-tools">
-                <div class="crypto-section">
-                    <h3 style="color: #00ccff; margin-bottom: 15px;">🔤 Caesar Cipher</h3>
-                    <div class="input-group">
-                        <label>Message:</label>
-                        <textarea id="caesarInput" placeholder="Enter your message..."></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Shift (1-25):</label>
-                        <input type="number" id="caesarShift" min="1" max="25" value="3">
-                    </div>
-                    <button class="crypto-btn" onclick="caesarEncrypt()">Encrypt</button>
-                    <button class="crypto-btn" onclick="caesarDecrypt()">Decrypt</button>
-                    <button class="crypto-btn" onclick="caesarBruteForce()">Brute Force</button>
-                    <div class="crypto-output" id="caesarOutput">Results will appear here...</div>
-                </div>
-
-                <div class="crypto-section">
-                    <h3 style="color: #00ccff; margin-bottom: 15px;">📜 Vigenère Cipher</h3>
-                    <div class="input-group">
-                        <label>Message:</label>
-                        <textarea id="vigenereInput" placeholder="Enter your message..."></textarea>
-                    </div>
-                    <div class="input-group">
-                        <label>Key:</label>
-                        <input type="text" id="vigenereKey" placeholder="Enter key...">
-                    </div>
-                    <button class="crypto-btn" onclick="vigenereEncrypt()">Encrypt</button>
-                    <button class="crypto-btn" onclick="vigenereDecrypt()">Decrypt</button>
-                    <button class="crypto-btn" onclick="vigenereAnalyze()">Key Analysis</button>
-                    <div class="crypto-output" id="vigenereOutput">Results will appear here...</div>
-                </div>
-
-                <div class="crypto-section">
-                    <h3 style="color: #00ccff; margin-bottom: 15px;">🕵️ Frequency Analysis</h3>
-                    <div class="input-group">
-                        <label>Cipher Text:</label>
-                        <textarea id="frequencyInput" placeholder="Enter cipher text for analysis..."></textarea>
-                    </div>
-                    <button class="crypto-btn" onclick="performFrequencyAnalysis()">Analyze</button>
-                    <div class="frequency-analysis" id="frequencyChart"></div>
-                    <div class="crypto-output" id="frequencyOutput">Frequency analysis results...</div>
-                </div>
-
-                <!-- <div class="crypto-section">
-                    <h3 style="color: #00ccff; margin-bottom: 15px;">⚡ Hybrid Cipher Breaker</h3>
-                    <div class="input-group">
-                        <label>Encrypted Message:</label>
-                        <textarea id="hybridInput" placeholder="Enter encrypted text to crack..."></textarea>
-                    </div>
-                    <button class="crypto-btn" onclick="hybridCrack()">Auto-Crack</button>
-                    <div class="crypto-output brute-force-results" id="hybridOutput">Crack attempts will appear here...</div>
-                </div> -->
-            </div>
-        </div>
-
-        <div class="dashboard">
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-icon">🌐</div>
-                    <div class="panel-title">Network Monitor</div>
-                </div>
-                <div class="metric">
-                    <span>Active Connections:</span>
-                    <span id="connections">42</span>
-                </div>
-                <div class="metric">
-                    <span>Packets/sec:</span>
-                    <span id="packets">1,247</span>
-                </div>
-                <div class="metric">
-                    <span>Bandwidth:</span>
-                    <span id="bandwidth">89.3 MB/s</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="networkProgress"></div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-icon">🔒</div>
-                    <div class="panel-title">Security Status</div>
-                </div>
-                <div class="metric">
-                    <span>Threat Level:</span>
-                    <span style="color: #00ff41;">LOW</span>
-                </div>
-                <div class="metric">
-                    <span>Firewall:</span>
-                    <span style="color: #00ff41;">ACTIVE</span>
-                </div>
-                <div class="metric">
-                    <span>Last Scan:</span>
-                    <span id="lastScan">2 min ago</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="securityProgress"></div>
-                </div>
-            </div>
-
-            <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-icon">💻</div>
-                    <div class="panel-title">System Resources</div>
-                </div>
-                <div class="metric">
-                    <span>CPU Usage:</span>
-                    <span id="cpu">34%</span>
-                </div>
-                <div class="metric">
-                    <span>Memory:</span>
-                    <span id="memory">67%</span>
-                </div>
-                <div class="metric">
-                    <span>Disk I/O:</span>
-                    <span id="diskio">Low</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="systemProgress"></div>
-                </div>
-            </div>
-
-            <!-- <div class="panel">
-                <div class="panel-header">
-                    <div class="panel-icon">🎯</div>
-                    <div class="panel-title">Mission Status</div>
-                </div>
-                <div class="metric">
-                    <span>Objective:</span>
-                    <span style="color: #00ccff;">LEARNING</span>
-                </div>
-                <div class="metric">
-                    <span>Progress:</span>
-                    <span id="missionProgress">78%</span>
-                </div>
-                <div class="metric">
-                    <span>Skills Unlocked:</span>
-                    <span id="skillsUnlocked">12/20</span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="missionProgressBar"></div>
-                </div>
-            </div> -->
-        </div>
-
-        <div class="terminal">
-            <div class="terminal-header">
-                <div class="terminal-title">CyberSpy Terminal v1.1.0</div>
-                <div class="terminal-controls">
-                    <div class="control-btn"></div>
-                    <div class="control-btn"></div>
-                    <div class="control-btn"></div>
-                </div>
-            </div>
-            <div class="terminal-output" id="terminalOutput">
-                <div class="terminal-line">Welcome to CyberSpy Educational Terminal</div>
-                <div class="terminal-line">Type 'help' for available commands</div>
-                <div class="terminal-line">System initialized... <span class="blink">█</span></div>
-            </div>
-            <div class="terminal-input">
-                <span class="prompt">cyberspy@education:~$</span>
-                <input type="text" class="input-field" id="commandInput" placeholder="Enter command..." autocomplete="off">
-            </div>
-        </div>
-    </div>
-
-
-    <script>
-        // Audio context for typing sounds
+// Audio context for typing sounds
         let audioContext;
         let isTyping = false;
 
@@ -239,202 +13,21 @@
         function playTypingSound() {
             if (!audioContext) return;
             
-            const oscillator1 = audioContext.createOscillator();
-            const oscillator2 = audioContext.createOscillator();
-            const noiseBuffer = createNoiseBuffer();
-            const noiseSource = audioContext.createBufferSource();
-            
+            const oscillator = audioContext.createOscillator();
             const gainNode = audioContext.createGain();
-            const filterNode = audioContext.createBiquadFilter();
             
-            noiseSource.buffer = noiseBuffer;
-            
-            oscillator1.connect(gainNode);
-            oscillator2.connect(gainNode);
-            noiseSource.connect(filterNode);
-            filterNode.connect(gainNode);
+            oscillator.connect(gainNode);
             gainNode.connect(audioContext.destination);
             
-            filterNode.type = 'highpass';
-            filterNode.frequency.setValueAtTime(2000, audioContext.currentTime);
-            filterNode.Q.setValueAtTime(1, audioContext.currentTime);
+            // Create a subtle typing sound
+            oscillator.frequency.setValueAtTime(800 + Math.random() * 400, audioContext.currentTime);
+            oscillator.type = 'square';
             
-            const baseFreq = 800 + Math.random() * 200;
-            oscillator1.frequency.setValueAtTime(baseFreq, audioContext.currentTime);
-            oscillator1.frequency.exponentialRampToValueAtTime(baseFreq * 0.3, audioContext.currentTime + 0.05);
-            oscillator1.type = 'triangle';
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
             
-            oscillator2.frequency.setValueAtTime(baseFreq * 2.5, audioContext.currentTime);
-            oscillator2.frequency.exponentialRampToValueAtTime(baseFreq * 0.8, audioContext.currentTime + 0.02);
-            oscillator2.type = 'sawtooth';
-            
-            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.005);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.03);
-            gainNode.gain.linearRampToValueAtTime(0.001, audioContext.currentTime + 0.08);
-            
-            const startTime = audioContext.currentTime;
-            const endTime = startTime + 0.08;
-            
-            oscillator1.start(startTime);
-            oscillator1.stop(endTime);
-            
-            oscillator2.start(startTime);
-            oscillator2.stop(startTime + 0.02);
-            
-            noiseSource.start(startTime);
-            noiseSource.stop(startTime + 0.01);
-        }
-
-        function createNoiseBuffer() {
-            const bufferSize = audioContext.sampleRate * 0.01;
-            const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-            const output = buffer.getChannelData(0);
-            
-            for (let i = 0; i < bufferSize; i++) {
-                output[i] = (Math.random() * 2 - 1) * 0.1;
-            }
-            
-            return buffer;
-        }
-
-        // User Guide System
-        const userGuideContent = `
-<div class="guide-section">
-    <div class="guide-section-title">🔐 CAESAR CIPHER MODULE</div>
-    <div class="guide-feature">
-        <div class="guide-feature-title">Basic Operations</div>
-        <div class="guide-feature-desc">The Caesar cipher shifts each letter by a fixed number of positions in the alphabet.</div>
-        <ul class="guide-steps">
-            <li>Enter your message in the text area</li>
-            <li>Set shift value (1-25) - default is 3</li>
-            <li>Click 'Encrypt' to encode or 'Decrypt' to decode</li>
-            <li>Use 'Brute Force' to try all possible shifts</li>
-        </ul>
-        <div class="guide-tip">💡 TIP: Common Caesar shift values are 3, 13 (ROT13), and 21.</div>
-    </div>
-</div>
-
-<div class="guide-section">
-    <div class="guide-section-title">📜 VIGENÈRE CIPHER MODULE</div>
-    <div class="guide-feature">
-        <div class="guide-feature-title">Advanced Polyalphabetic Encryption</div>
-        <div class="guide-feature-desc">Uses a keyword to create multiple Caesar ciphers, making it much stronger than simple substitution.</div>
-        <ul class="guide-steps">
-            <li>Enter your message in the text area</li>
-            <li>Provide a keyword (letters only, no spaces)</li>
-            <li>Choose 'Encrypt' or 'Decrypt' operation</li>
-            <li>Use 'Key Analysis' to detect possible key lengths</li>
-        </ul>
-        <div class="guide-tip">💡 TIP: Longer keys provide better security. Avoid dictionary words.</div>
-        <div class="guide-warning">⚠️ WARNING: Key analysis works best with texts longer than 100 characters.</div>
-    </div>
-</div>
-
-<div class="guide-section">
-    <div class="guide-section-title">🕵️ FREQUENCY ANALYSIS MODULE</div>
-    <div class="guide-feature">
-        <div class="guide-feature-title">Cryptanalysis Tool</div>
-        <div class="guide-feature-desc">Analyzes letter frequency patterns to break substitution ciphers.</div>
-        <ul class="guide-steps">
-            <li>Paste encrypted text into the analysis area</li>
-            <li>Click 'Analyze' to generate frequency chart</li>
-            <li>Compare results with English letter frequencies</li>
-            <li>Most common English letters: E(12.7%), T(9.1%), A(8.2%)</li>
-        </ul>
-        <div class="guide-tip">💡 TIP: Works best with longer cipher texts (200+ characters).</div>
-    </div>
-</div>
-
-<div class="guide-section">
-    <div class="guide-section-title">🖥️ TERMINAL INTERFACE</div>
-    <div class="guide-feature">
-        <div class="guide-feature-title">Command Line Operations</div>
-        <div class="guide-feature-desc">Access advanced cryptographic functions through terminal commands.</div>
-        <ul class="guide-steps">
-            <li>Type 'help' to see all available commands</li>
-            <li>Use 'caesar encrypt/decrypt/crack [text] [shift]'</li>
-            <li>Use 'vigenere encrypt/decrypt [text] [key]'</li>
-            <li>Use 'frequency [text]' for quick analysis</li>
-            <li>Use 'crack [ciphertext]' for auto-decryption</li>
-        </ul>
-        <div class="guide-tip">💡 TIP: Terminal provides faster access to crypto functions.</div>
-    </div>
-</div>
-
-<div class="guide-section">
-    <div class="guide-section-title">📊 MONITORING DASHBOARD</div>
-    <div class="guide-feature">
-        <div class="guide-feature-title">System Status Overview</div>
-        <div class="guide-feature-desc">Real-time monitoring of network, security, and system resources.</div>
-        <ul class="guide-steps">
-            <li>Network Monitor: Shows active connections and traffic</li>
-            <li>Security Status: Displays firewall and threat levels</li>
-            <li>System Resources: Monitors CPU, memory, and disk usage</li>
-            <li>All metrics update automatically every 3 seconds</li>
-        </ul>
-    </div>
-</div>
-
-<div class="guide-section">
-    <div class="guide-section-title">🚀 GETTING STARTED</div>
-    <div class="guide-feature">
-        <div class="guide-feature-title">Quick Start Guide</div>
-        <div class="guide-feature-desc">Begin your cybersecurity journey with these recommended steps:</div>
-        <ul class="guide-steps">
-            <li>Start with Caesar cipher - encrypt "HELLO WORLD" with shift 5</li>
-            <li>Try decrypting "MJQQT BTWQI" using brute force</li>
-            <li>Experiment with Vigenère using key "SECRET"</li>
-            <li>Analyze frequency of "WKLV LV D WHVW PHVVDJH"</li>
-            <li>Explore terminal commands with 'mission' command</li>
-        </ul>
-        <div class="guide-tip">💡 TIP: Practice with short messages first, then try longer texts!</div>
-    </div>
-</div>
-        `;
-
-        function showUserGuide() {
-            const overlay = document.getElementById('guideOverlay');
-            const content = document.getElementById('guideContent');
-            
-            overlay.style.display = 'flex';
-            
-            setTimeout(() => {
-                const loadingProgress = document.getElementById('loadingProgress');
-                if (loadingProgress) {
-                    loadingProgress.style.width = '100%';
-                }
-            }, 100);
-            
-            setTimeout(() => {
-                content.innerHTML = '<div class="blinking-cursor"></div>';
-                typewriterEffectHTML(content, userGuideContent);
-            }, 3000);
-        }
-
-        function closeGuide() {
-            document.getElementById('guideOverlay').style.display = 'none';
-        }
-
-        function typewriterEffectHTML(element, text) {
-            if (!audioContext) initAudio();
-            
-            element.innerHTML = '';
-            let i = 0;
-            
-            function typeChar() {
-                if (i < text.length) {
-                    element.innerHTML = text.substring(0, i + 1) + '<span class="blinking-cursor"></span>';
-                    if (Math.random() > 0.7) playTypingSound();
-                    i++;
-                    const delay = text.charAt(i-1) === ' ' ? 15 : 8 + Math.random() * 10;
-                    setTimeout(typeChar, delay);
-                } else {
-                    element.innerHTML = text;
-                }
-            }
-            
-            typeChar();
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.1);
         }
 
         function typewriterEffect(element, text, callback = null) {
@@ -449,11 +42,7 @@
                     element.textContent += text.charAt(i);
                     playTypingSound();
                     i++;
-                    const baseDelay = 30;
-                    const variation = Math.random() * 40;
-                    const isSpace = text.charAt(i-1) === ' ';
-                    const delay = isSpace ? baseDelay + 20 : baseDelay + variation;
-                    setTimeout(typeChar, delay);
+                    setTimeout(typeChar, 20 + Math.random() * 30);
                 } else {
                     isTyping = false;
                     if (callback) callback();
@@ -471,18 +60,6 @@
             
             typewriterEffect(line, text, callback);
         }
-
-        // Show guide on page load
-        window.addEventListener('load', () => {
-            setTimeout(showUserGuide, 1000);
-        });
-
-        // Close guide with Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeGuide();
-            }
-        });
 
         // Cryptography Functions
         function caesarShift(text, shift, decrypt = false) {
@@ -593,6 +170,7 @@
             analysis += "=" .repeat(30) + "\n";
             analysis += "Attempting key length detection...\n\n";
             
+            // Simple key length analysis using Index of Coincidence
             const cleanText = input.replace(/[^A-Za-z]/g, '').toUpperCase();
             
             for (let keyLen = 2; keyLen <= 10; keyLen++) {
@@ -625,6 +203,7 @@
             const chart = document.getElementById('frequencyChart');
             const output = document.getElementById('frequencyOutput');
             
+            // Create frequency chart
             chart.innerHTML = '';
             const maxFreq = Math.max(...Object.values(freq));
             
@@ -639,6 +218,7 @@
                 chart.appendChild(bar);
             }
             
+            // Analysis text
             const total = Object.values(freq).reduce((a, b) => a + b, 0);
             let analysis = "FREQUENCY ANALYSIS RESULTS\n";
             analysis += "=" .repeat(30) + "\n";
@@ -656,14 +236,60 @@
             typewriterEffect(output, analysis);
         }
 
+        function hybridCrack() {
+            const input = document.getElementById('hybridInput').value;
+            const output = document.getElementById('hybridOutput');
+            
+            if (!input.trim()) {
+                typewriterEffect(output, 'Error: Please enter text to crack');
+                return;
+            }
+            
+            output.innerHTML = '';
+            let resultCount = 0;
+            
+            function addResult(method, result, confidence) {
+                resultCount++;
+                const div = document.createElement('div');
+                div.className = 'result-item';
+                div.innerHTML = `<strong>${method}</strong> (${confidence}): ${result}`;
+                div.onclick = () => {
+                    navigator.clipboard.writeText(result);
+                    addToTerminalWithEffect(`Copied to clipboard: ${result.substring(0, 50)}...`);
+                };
+                output.appendChild(div);
+            }
+            
+            // Try Caesar cipher brute force
+            for (let shift = 1; shift <= 25; shift++) {
+                const result = caesarShift(input, shift, true);
+                const englishness = calculateEnglishness(result);
+                if (englishness > 0.3) {
+                    addResult(`Caesar Shift ${shift}`, result, `${(englishness * 100).toFixed(0)}% match`);
+                }
+            }
+            
+            // Try common Vigenère keys
+            const commonKeys = ['THE', 'AND', 'KEY', 'SECRET', 'CIPHER', 'CODE', 'WORD', 'PASS', 'LOCK'];
+            commonKeys.forEach(key => {
+                const result = vigenereShift(input, key, true);
+                const englishness = calculateEnglishness(result);
+                if (englishness > 0.2) {
+                    addResult(`Vigenère Key: ${key}`, result, `${(englishness * 100).toFixed(0)}% match`);
+                }
+            });
+            
+            if (resultCount === 0) {
+                addResult('No matches', 'Unable to crack with common methods. Try manual analysis.', 'Low');
+            }
+        }
+
         function calculateEnglishness(text) {
             const commonWords = ['THE', 'AND', 'FOR', 'ARE', 'BUT', 'NOT', 'YOU', 'ALL', 'CAN', 'HER', 'WAS', 'ONE', 'OUR', 'HAD', 'DAY', 'GET', 'USE', 'MAN', 'NEW', 'NOW', 'WAY', 'SAY', 'EACH', 'WHICH', 'THEIR'];
             const words = text.toUpperCase().replace(/[^A-Z\s]/g, '').split(/\s+/);
             const matches = words.filter(word => commonWords.includes(word)).length;
             return matches / Math.max(words.length, 1);
         }
-
-        // Matrix Background Effect
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -700,6 +326,140 @@
         }
 
         setInterval(drawMatrix, 35);
+
+        // User Guide System
+        const userGuideContent = `
+<div class="guide-section">
+    <div class="guide-section-title">🔐 CAESAR CIPHER MODULE</div>
+    <div class="guide-feature">
+        <div class="guide-feature-title">Basic Operations</div>
+        <div class="guide-feature-desc">The Caesar cipher shifts each letter by a fixed number of positions in the alphabet.</div>
+        <ul class="guide-steps">
+            <li>Enter your message in the text area</li>
+            <li>Set shift value (1-25) - default is 3</li>
+            <li>Click 'Encrypt' to encode or 'Decrypt' to decode</li>
+            <li>Use 'Brute Force' to try all possible shifts</li>
+        </ul>
+        <div class="guide-tip">💡 TIP: Common Caesar shift values are 3, 13 (ROT13), and 21.</div>
+    </div>
+</div>
+
+<div class="guide-section">
+    <div class="guide-section-title">📜 VIGENÈRE CIPHER MODULE</div>
+    <div class="guide-feature">
+        <div class="guide-feature-title">Advanced Polyalphabetic Encryption</div>
+        <div class="guide-feature-desc">Uses a keyword to create multiple Caesar ciphers, making it much stronger than simple substitution.</div>
+        <ul class="guide-steps">
+            <li>Enter your message in the text area</li>
+            <li>Provide a keyword (letters only, no spaces)</li>
+            <li>Choose 'Encrypt' or 'Decrypt' operation</li>
+            <li>Use 'Key Analysis' to detect possible key lengths</li>
+        </ul>
+        <div class="guide-tip">💡 TIP: Longer keys provide better security. Avoid dictionary words.</div>
+        <div class="guide-warning">⚠️ WARNING: Key analysis works best with texts longer than 100 characters.</div>
+    </div>
+</div>
+
+<div class="guide-section">
+    <div class="guide-section-title">🕵️ FREQUENCY ANALYSIS MODULE</div>
+    <div class="guide-feature">
+        <div class="guide-feature-title">Cryptanalysis Tool</div>
+        <div class="guide-feature-desc">Analyzes letter frequency patterns to break substitution ciphers.</div>
+        <ul class="guide-steps">
+            <li>Paste encrypted text into the analysis area</li>
+            <li>Click 'Analyze' to generate frequency chart</li>
+            <li>Compare results with English letter frequencies</li>
+            <li>Most common English letters: E(12.7%), T(9.1%), A(8.2%)</li>
+        </ul>
+        <div class="guide-tip">💡 TIP: Works best with longer cipher texts (200+ characters).</div>
+    </div>
+</div>
+
+<div class="guide-section">
+    <div class="guide-section-title">🖥️ TERMINAL INTERFACE</div>
+    <div class="guide-feature">
+        <div class="guide-feature-title">Command Line Operations</div>
+        <div class="guide-feature-desc">Access advanced cryptographic functions through terminal commands.</div>
+        <ul class="guide-steps">
+            <li>Type 'help' to see all available commands</li>
+            <li>Use 'caesar encrypt/decrypt/crack [text] [shift]'</li>
+            <li>Use 'vigenere encrypt/decrypt [text] [key]'</li>
+            <li>Use 'frequency [text]' for quick analysis</li>
+            <li>Use 'crack [ciphertext]' for auto-decryption</li>
+        </ul>
+        <div class="guide-tip">💡 TIP: Terminal provides faster access to crypto functions.</div>
+    </div>
+</div>
+
+<div class="guide-section">
+    <div class="guide-section-title">📊 MONITORING DASHBOARD</div>
+    <div class="guide-feature">
+        <div class="guide-feature-title">System Status Overview</div>
+        <div class="guide-feature-desc">Real-time monitoring of network, security, and system resources.</div>
+        <ul class="guide-steps">
+            <li>Network Monitor: Shows active connections and traffic</li>
+            <li>Security Status: Displays firewall and threat levels</li>
+            <li>System Resources: Monitors CPU, memory, and disk usage</li>
+            <li>All metrics update automatically every 3 seconds</li>
+        </ul>
+    </div>
+</div>
+
+<div class="guide-section">
+    <div class="guide-section-title">🎯 EDUCATIONAL OBJECTIVES</div>
+    <div class="guide-feature">
+        <div class="guide-feature-title">Learning Goals</div>
+        <div class="guide-feature-desc">Master fundamental cybersecurity and cryptography concepts.</div>
+        <ul class="guide-steps">
+            <li>Understand classical cipher mechanisms</li>
+            <li>Learn cryptanalysis techniques</li>
+            <li>Practice ethical hacking methodologies</li>
+            <li>Develop security awareness skills</li>
+            <li>Explore network monitoring concepts</li>
+        </ul>
+        <div class="guide-warning">⚠️ ETHICS: Always use these skills responsibly and legally!</div>
+    </div>
+</div>
+
+<div class="guide-section">
+    <div class="guide-section-title">🚀 GETTING STARTED</div>
+    <div class="guide-feature">
+        <div class="guide-feature-title">Quick Start Guide</div>
+        <div class="guide-feature-desc">Begin your cybersecurity journey with these recommended steps:</div>
+        <ul class="guide-steps">
+            <li>Start with Caesar cipher - encrypt "HELLO WORLD" with shift 5</li>
+            <li>Try decrypting "MJQQT BTWQI" using brute force</li>
+            <li>Experiment with Vigenère using key "SECRET"</li>
+            <li>Analyze frequency of "WKLV LV D WHVW PHVVDJH"</li>
+            <li>Explore terminal commands with 'mission' command</li>
+        </ul>
+        <div class="guide-tip">💡 TIP: Practice with short messages first, then try longer texts!</div>
+    </div>
+</div>
+        `;
+
+        function showUserGuide() {
+            const overlay = document.getElementById('guideOverlay');
+            const content = document.getElementById('guideContent');
+            
+            overlay.style.display = 'flex';
+            
+            setTimeout(() => {
+                const loadingProgress = document.getElementById('loadingProgress');
+                if (loadingProgress) {
+                    loadingProgress.style.width = '100%';
+                }
+            }, 100);
+            
+            setTimeout(() => {
+                content.innerHTML = '<div class="blinking-cursor"></div>';
+                typewriterEffectHTML(content, userGuideContent);
+            }, 3000);
+        }
+
+        function closeGuide() {
+            document.getElementById('guideOverlay').style.display = 'none';
+        }
 
         // Terminal functionality
         const terminalOutput = document.getElementById('terminalOutput');
@@ -940,6 +700,7 @@
                     
                     const results = ["Auto-cracking cipher...", "======================"];
                     
+                    // Try Caesar
                     for (let i = 1; i <= 25; i++) {
                         const attempt = caesarShift(text, i, true);
                         if (calculateEnglishness(attempt) > 0.3) {
@@ -947,6 +708,7 @@
                         }
                     }
                     
+                    // Try common Vigenère keys
                     const keys = ['KEY', 'SECRET', 'CIPHER', 'CODE'];
                     keys.forEach(key => {
                         const attempt = vigenereShift(text, key, true);
@@ -1019,10 +781,13 @@
             document.getElementById('packets').textContent = (Math.floor(Math.random() * 2000) + 500).toLocaleString();
             document.getElementById('bandwidth').textContent = (Math.random() * 100).toFixed(1) + ' MB/s';
             document.getElementById('cpu').textContent = Math.floor(Math.random() * 60) + 20 + '%';
+            document.getElementById('memory').textContent = Math.floor(Math.random() * 40) + 50 + '%';
             
+            // Update progress bars
             document.getElementById('networkProgress').style.width = (Math.random() * 100) + '%';
             document.getElementById('securityProgress').style.width = '85%';
             document.getElementById('systemProgress').style.width = (Math.random() * 100) + '%';
+            document.getElementById('missionProgressBar').style.width = '78%';
         }
 
         setInterval(updateMetrics, 3000);
@@ -1036,6 +801,3 @@
 
         // Focus on terminal input
         commandInput.focus();
-    </script>
-</body>
-</html>
